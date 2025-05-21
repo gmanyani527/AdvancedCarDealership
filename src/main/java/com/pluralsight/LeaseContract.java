@@ -40,6 +40,24 @@ public class LeaseContract extends Contract {
         this.originalPrice = originalPrice;
     }
 
+    @Override
+    public double getTotalPrice() {
+        // Total cost for lease is just the lease fee (as per spec)
+        return leaseFee;
+    }
+
+    public double getMonthlyPayment() {
+        double depreciation = originalPrice - expectedEndingValue;
+        double monthlyRate = INTEREST_RATE / 12;
+
+        double monthlyPayment = (depreciation + leaseFee) *
+                (monthlyRate / (1 - Math.pow(1 + monthlyRate, -TERM_MONTHS)));
+
+
+        return monthlyPayment;
+
+
+    }
 
 
 }
