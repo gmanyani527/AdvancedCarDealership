@@ -12,7 +12,7 @@ public class ContractDataManager {
         List<LeaseContract> leaseContracts = new ArrayList<>();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("C:/Users/gmany/OneDrive/Desktop/Pluralsight/workshops/AdvancedCarDealership/contracts_with_headings.csv"));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -55,7 +55,6 @@ public class ContractDataManager {
                 parts[2], // name
                 parts[3], // email
                 parts[4], // vehicleSold
-                Double.parseDouble(parts[12]), // salesTax
                 Double.parseDouble(parts[11]), // vehiclePrice
                 parts[16].equalsIgnoreCase("YES") // isFinance
         );
@@ -73,7 +72,7 @@ public class ContractDataManager {
 
 
     public void saveContract (Contract contract){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("\"C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv\""))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv"))) {
 
            String record = "";
             if (contract instanceof SalesContract) {

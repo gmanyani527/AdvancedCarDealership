@@ -60,7 +60,7 @@ private Dealership dealership1;
                    break;
 
                case "10":
-
+                    createNewContract();
                    break;
 
                case "0":
@@ -88,6 +88,7 @@ private Dealership dealership1;
         System.out.println("7. Search by Vehicle Type (Ex: Sedan and SUV)");
         System.out.println("8. Add a Vehicle ");
         System.out.println("9. Remove a Vehicle");
+        System.out.println("10. Add a contract");
         System.out.println("0. Quit");
     }
 
@@ -288,9 +289,11 @@ private Dealership dealership1;
         if(contractType.equals("SALE")){
             System.out.println("Is the vehicle financed? (yes/no)");
             String financed = scanner.nextLine();
-            boolean isFinanced = financed.equalsIgnoreCase("yes");
+            boolean isFinanced = Boolean.parseBoolean(String.valueOf(financed.equalsIgnoreCase("yes")));
 
-            contract = new SalesContract(date, name, email, String.valueOf(vehicle.getVin()), .05, vehicle.getPrice(), isFinanced);
+            contract = new SalesContract(date, name, email, vehicle.getMake() + " " + vehicle.getModel(), vehicle.getPrice(), isFinanced);
+
+
         }
         else if (contractType.equals("LEASE")) {
         contract = new LeaseContract(
@@ -305,7 +308,7 @@ private Dealership dealership1;
         manager.saveContract(contract);
         dealership1.removeVehicle(dealership1.getVehicleByVin(vehicleId)); // Make sure this method exists
         System.out.println("Contract saved and vehicle removed from inventory.");
-        
+
 
     }
 

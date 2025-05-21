@@ -8,9 +8,9 @@ public class SalesContract extends Contract {
     private boolean isFinance;
     private double vehiclePrice;
 
-    public SalesContract(String date, String name, String email, String vehicleSold, double salesTax, double vehiclePrice, boolean isFinance) {
+    public SalesContract(String date, String name, String email, String vehicleSold, double vehiclePrice, boolean isFinance) {
         super(date, name, email, vehicleSold);
-        this.salesTax = salesTax;
+        this.salesTax = .05;
         this.vehiclePrice = vehiclePrice;
         this.processingFee = (vehiclePrice < 10000) ? 295 : 495;
         this.isFinance = isFinance;
