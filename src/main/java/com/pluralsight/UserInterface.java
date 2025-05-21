@@ -59,6 +59,10 @@ private Dealership dealership1;
                    processRemoveVehicleRequest(); // Remove a Vehicle
                    break;
 
+               case "10":
+
+                   break;
+
                case "0":
                    System.out.println("Goodbye!");
                    running = false;
@@ -256,6 +260,53 @@ private Dealership dealership1;
         System.out.printf ("||        PHONE:   %-41s||\n", dealership1.getPhone());
         System.out.println("||                                                          ||");
         System.out.println("==============================================================");
+    }
+
+    public void createNewContract(){
+        ContractDataManager manager = new ContractDataManager();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the date: ");
+        String date = scanner.nextLine();
+        System.out.println("Enter your name: ");
+        String name = scanner.nextLine();
+        System.out.println("Enter your email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter vehicle ID (VIN): ");
+        int vehicleId = Integer.parseInt(scanner.nextLine());
+
+        Vehicle vehicle = dealership1.getVehicleByVin(vehicleId);
+        if(vehicle == null){
+            System.out.println("Vehicle vin not found");
+            return;
+        }
+        System.out.println("What Contract Type: (SALE or LEASE)");
+        String contractType = scanner.nextLine().toUpperCase();
+
+        Contract contract = null;
+
+        if(contractType.equals("SALE")){
+            System.out.println("Is the vehicle financed? (yes/no)");
+            String financed = scanner.nextLine();
+            boolean isFinanced = financed.equalsIgnoreCase("yes");
+
+            contract = new SalesContract(date, name, email, String.valueOf(vehicle.getVin()), .05, vehicle.getPrice(), isFinanced);
+        }
+        else if (contractType.equals("LEASE")) {
+        contract = new LeaseContract(
+                date, name, email, String.valueOf(vehicle.getVin()),
+                vehicle.getPrice()
+        );
+    } else {
+        System.out.println("Invalid contract type.");
+        return;
+    }
+        // Save and remove vehicle
+        manager.saveContract(contract);
+        dealership1.removeVehicle(dealership1.getVehicleByVin(vehicleId)); // Make sure this method exists
+        System.out.println("Contract saved and vehicle removed from inventory.");
+        
+
     }
 
 
