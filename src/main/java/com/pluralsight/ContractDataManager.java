@@ -70,7 +70,54 @@ public class ContractDataManager {
                 Double.parseDouble(parts[11])
         );
     }
+
+
+    public void saveContract (Contract contract){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("\"C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv\""))) {
+
+           String record = "";
+            if (contract instanceof SalesContract) {
+                SalesContract sc = (SalesContract) contract;
+                record = String.join("|",
+                        "SALE",
+                        sc.getDate(),
+                        sc.getName(),
+                        sc.getEmail(),
+                        sc.getVehicleSold(),
+                        String.valueOf(sc.getVehiclePrice()),
+                        String.valueOf(sc.getSalesTax()),
+                        String.valueOf(sc.getRecordingFee()),
+                        String.valueOf(sc.getProcessingFee()),
+                        String.valueOf(sc.getTotalPrice()),
+                        String.valueOf(sc.isFinance()),
+                        String.valueOf(sc.getMonthlyPayment())
+                );
+            } else if (contract instanceof LeaseContract) {
+                LeaseContract lc = (LeaseContract) contract;
+                record = String.join("|",
+                        "LEASE",
+                        lc.getDate(),
+                        lc.getName(),
+                        lc.getEmail(),
+                        lc.getVehicleSold(),
+                        String.valueOf(lc.getOriginalPrice()),
+                        String.valueOf(lc.getExpectedEndingValue()),
+                        String.valueOf(lc.getLeaseFee()),
+                        String.valueOf(lc.getTotalPrice()),
+                        String.valueOf(lc.getMonthlyPayment())
+                );
+            }
+
+            writer.write(record);
+            writer.newLine();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
+}
 
 
 

@@ -52,6 +52,10 @@ public class SalesContract extends Contract {
         isFinance = finance;
     }
 
+    public double getVehiclePrice() {
+        return vehiclePrice;
+    }
+
     @Override
     public double getTotalPrice() {
         return vehiclePrice + getSalesTaxAmount() + getRecordingFee() + getProcessingFee();
