@@ -79,4 +79,19 @@ public class SalesContract extends Contract {
         double monthlyInterestRate = interestRate / 12;
         return totalPrice * (monthlyInterestRate / (1 - Math.pow(1 + monthlyInterestRate, -termMonths)));
     }
+
+    @Override
+    public String toString() {
+        return "SalesContract{" +
+                "date='" + super.getDate() + '\'' +
+                ", customer='" + super.getName() + '\'' +
+                ", email='" + super.getEmail() + '\'' +
+                ", vehicle='" + super.getVehicleSold() + '\'' +
+                ", vehiclePrice=" + vehiclePrice +
+                ", salesTax=" + salesTax +
+                ", recordingFee=" + recordingFee +
+                ", processingFee=" + processingFee +
+                ", isFinance=" + isFinance +
+                '}';
+    }
 }

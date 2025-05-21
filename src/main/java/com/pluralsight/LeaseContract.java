@@ -8,12 +8,13 @@ public class LeaseContract extends Contract {
     private static final double INTEREST_RATE = 0.04;
     private static final int TERM_MONTHS = 36;
 
-    public LeaseContract(String date, String customerName, String email, String vehicleSold, double originalPrice) {
-        super(date, customerName, email, vehicleSold);
+    public LeaseContract(String date, String name, String email, String vehicleSold, double originalPrice) {
+        super(date, name, email, vehicleSold);
         this.originalPrice = originalPrice;
         this.expectedEndingValue = 0.5 * originalPrice;
         this.leaseFee = 0.07 * originalPrice;
     }
+
 
 
     public double getExpectedEndingValue() {
@@ -40,10 +41,8 @@ public class LeaseContract extends Contract {
         this.originalPrice = originalPrice;
     }
 
-    @Override
-    public double getTotalPrice() {
-        // Total cost for lease is just the lease fee (as per spec)
-        return leaseFee;
+    public double getTotalPrice(){
+        return getTotalPrice();
     }
 
     public double getMonthlyPayment() {
@@ -58,6 +57,20 @@ public class LeaseContract extends Contract {
 
 
     }
+
+    @Override
+    public String toString() {
+        return "LeaseContract{" +
+                "date='" + super.getDate() + '\'' +
+                ", customer='" + super.getName() + '\'' +
+                ", email='" + super.getEmail() + '\'' +
+                ", vehicle='" + super.getVehicleSold() + '\'' +
+                ", originalPrice=" + originalPrice +
+                ", expectedEndingValue=" + expectedEndingValue +
+                ", leaseFee=" + leaseFee +
+                '}';
+    }
+
 
 
 }

@@ -14,6 +14,14 @@ public abstract class Contract {
         this.vehicleSold = vehicleSold;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getDate() {
         return date;
     }
@@ -43,4 +51,13 @@ public abstract class Contract {
 
     public abstract double getMonthlyPayment();
 
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "date='" + date + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", vehicleSold='" + vehicleSold + '\'' +
+                '}';
+    }
 }

@@ -2,54 +2,75 @@ package com.pluralsight;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-
+import java.io.*;
+import java.util.*;
 public class ContractDataManager {
 
 
-    public Contract getContract() {
-        Contract contract = null;
+    public void ContractReader() {
+        List<SalesContract> salesContracts = new ArrayList<>();
+        List<LeaseContract> leaseContracts = new ArrayList<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv"));
             String line;
 
-            if ((line = br.readLine()) != null) {
-                String[] dealerInfo = line.split("\\|");
-                String name = dealerInfo[0];
-                String address = dealerInfo[1];
-                String phone = dealerInfo[2];
-
-                dealership = new Dealership(name, address, phone);
-            }
-
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue; // skip empty lines
+                if (line.trim().startsWith("Type|") || line.trim().isEmpty()) {
+                    continue; // Skip header or blank lines
                 }
+
                 String[] parts = line.split("\\|");
-                if (parts.length != 8) {
-                    System.out.println("Skipping bad line: " + line);
-                    continue; // skip invalid lines
+
+                if (parts.length == 0) continue;
+
+                String type = parts[0].trim();
+
+                if (type.equalsIgnoreCase("SALE")) {
+                    salesContracts.add(parseSaleContract(parts));
+                } else if (type.equalsIgnoreCase("LEASE")) {
+                    leaseContracts.add(parseLeaseContract(parts));
                 }
-                int vin = Integer.parseInt(parts[0]);
-                String make = parts[1];
-                int year = Integer.parseInt(parts[2]);
-                String model = parts[3];
-                String vehicleType = parts[4];
-                String color = parts[5];
-                int odometer = Integer.parseInt(parts[6]);
-                double price = Double.parseDouble(parts[7]);
-
-                Vehicle vehicle = new Vehicle(vin, make, year, model, vehicleType, color, odometer, price);
-
-                dealership.addVehicle(vehicle);
             }
-        } catch (Exception e) {
+
+            System.out.println("Total SALE contracts: " + salesContracts.size());
+            for (SalesContract s : salesContracts) {
+                System.out.println(s);
+            }
+
+            System.out.println("Total LEASE contracts: " + leaseContracts.size());
+            for (LeaseContract l : leaseContracts) {
+                System.out.println(l);
+            }
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return contract;
     }
 
 
-}
+    public static SalesContract parseSaleContract(String[] parts) {
+        return new SalesContract(
+                parts[1], // date
+                parts[2], // name
+                parts[3], // email
+                parts[4], // vehicleSold
+                Double.parseDouble(parts[12]), // salesTax
+                Double.parseDouble(parts[11]), // vehiclePrice
+                parts[16].equalsIgnoreCase("YES") // isFinance
+        );
+    }
+
+    public static LeaseContract parseLeaseContract(String[] parts) {
+        return new LeaseContract(
+                parts[1],
+                parts[2],
+                parts[3],
+                parts[4],
+                Double.parseDouble(parts[11])
+        );
+    }
+    }
+
+
+
