@@ -12,7 +12,8 @@ public class Vehicle {
     private double price;
 
 
-    public Vehicle(int vin, String make, int year, String model, String vehicleType, String color, int odometer, double price) {
+    public Vehicle(int vin, String make, int year, String model, String type, String color, int odometer, double price)
+    {
         this.vin = vin;
         this.make = make;
         this.year = year;

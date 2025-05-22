@@ -8,12 +8,13 @@ public class LeaseContract extends Contract {
     private static final double INTEREST_RATE = 0.04;
     private static final int TERM_MONTHS = 36;
 
-    public LeaseContract(String date, String name, String email, String vehicleSold, double originalPrice) {
+    public LeaseContract(String date, String name, String email, Vehicle vehicleSold) {
         super(date, name, email, vehicleSold);
-        this.originalPrice = originalPrice;
+        this.originalPrice = vehicleSold.getPrice();
         this.expectedEndingValue = 0.5 * originalPrice;
         this.leaseFee = 0.07 * originalPrice;
     }
+
 
 
 
@@ -41,10 +42,11 @@ public class LeaseContract extends Contract {
         this.originalPrice = originalPrice;
     }
 
-    public double getTotalPrice(){
-        return getTotalPrice();
+    @Override
+    public double getTotalPrice() {
+        return originalPrice + leaseFee;
     }
-
+    @Override
     public double getMonthlyPayment() {
         double depreciation = originalPrice - expectedEndingValue;
         double monthlyRate = INTEREST_RATE / 12;

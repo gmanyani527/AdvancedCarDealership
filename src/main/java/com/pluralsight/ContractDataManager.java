@@ -50,31 +50,59 @@ public class ContractDataManager {
 
 
     public static SalesContract parseSaleContract(String[] parts) {
+        Vehicle vehicle = new Vehicle(
+                Integer.parseInt(parts[4]),  // VIN
+                parts[6],                    // Make
+                Integer.parseInt(parts[5]),  // Year
+                parts[7],                    // Model
+                parts[8],                    // Type
+                parts[9],                    // Color
+                Integer.parseInt(parts[10]), // Odometer
+                Double.parseDouble(parts[11]) // Price
+        );
+
+        boolean isFinance = parts.length > 16 && parts[16].equalsIgnoreCase("YES");
+
         return new SalesContract(
-                parts[1], // date
-                parts[2], // name
-                parts[3], // email
-                parts[4], // vehicleSold
-                Double.parseDouble(parts[11]), // vehiclePrice
-                parts[16].equalsIgnoreCase("YES") // isFinance
+                parts[1],  // Date
+                parts[2],  // Name
+                parts[3],  // Email
+                vehicle,
+                isFinance  // Finance option
         );
     }
+
+
 
     public static LeaseContract parseLeaseContract(String[] parts) {
+        // Reconstruct Vehicle
+        Vehicle vehicle = new Vehicle(
+                Integer.parseInt(parts[4]),  // VIN
+                parts[6],                    // Make
+                Integer.parseInt(parts[5]),  // Year
+                parts[7],                    // Model
+                parts[8],                    // Type
+                parts[9],                    // Color
+                Integer.parseInt(parts[10]), // Odometer
+                Double.parseDouble(parts[11]) // Price
+        );
+
+        // Return LeaseContract
         return new LeaseContract(
-                parts[1],
-                parts[2],
-                parts[3],
-                parts[4],
-                Double.parseDouble(parts[11])
+                parts[1],   // Date
+                parts[2],   // Name
+                parts[3],   // Email
+                vehicle
         );
     }
 
 
-    public void saveContract (Contract contract){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv"))) {
+    public void saveContract(Contract contract) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\gmany\\OneDrive\\Desktop\\Pluralsight\\workshops\\AdvancedCarDealership\\contracts_with_headings.csv", true))) {
 
-           String record = "";
+            String record = "";
+            Vehicle v = contract.getVehicleSold();
+
             if (contract instanceof SalesContract) {
                 SalesContract sc = (SalesContract) contract;
                 record = String.join("|",
@@ -82,13 +110,19 @@ public class ContractDataManager {
                         sc.getDate(),
                         sc.getName(),
                         sc.getEmail(),
-                        sc.getVehicleSold(),
-                        String.valueOf(sc.getVehiclePrice()),
-                        String.valueOf(sc.getSalesTax()),
+                        String.valueOf(v.getVin()),
+                        String.valueOf(v.getYear()),
+                        v.getMake(),
+                        v.getModel(),
+                        v.getVehicleType(),
+                        v.getColor(),
+                        String.valueOf(v.getOdometer()),
+                        String.valueOf(v.getPrice()),
+                        String.valueOf(sc.getSalesTaxAmount()),
                         String.valueOf(sc.getRecordingFee()),
                         String.valueOf(sc.getProcessingFee()),
                         String.valueOf(sc.getTotalPrice()),
-                        String.valueOf(sc.isFinance()),
+                        sc.isFinance() ? "YES" : "NO",
                         String.valueOf(sc.getMonthlyPayment())
                 );
             } else if (contract instanceof LeaseContract) {
@@ -98,8 +132,14 @@ public class ContractDataManager {
                         lc.getDate(),
                         lc.getName(),
                         lc.getEmail(),
-                        lc.getVehicleSold(),
-                        String.valueOf(lc.getOriginalPrice()),
+                        String.valueOf(v.getVin()),
+                        String.valueOf(v.getYear()),
+                        v.getMake(),
+                        v.getModel(),
+                        v.getVehicleType(),
+                        v.getColor(),
+                        String.valueOf(v.getOdometer()),
+                        String.valueOf(v.getPrice()),
                         String.valueOf(lc.getExpectedEndingValue()),
                         String.valueOf(lc.getLeaseFee()),
                         String.valueOf(lc.getTotalPrice()),
@@ -113,8 +153,8 @@ public class ContractDataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
 
 }
 
